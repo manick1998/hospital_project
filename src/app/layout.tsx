@@ -3,8 +3,14 @@ import type { ReactNode } from "react";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Arena Next.js PostgreSQL Starter",
-  description: "Starter template with Next.js, Drizzle, and PostgreSQL.",
+  title: "AegisCare Hospital Management System",
+  description: "Precision Healthcare Powered by Modern Medical Intelligence",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "AegisCare",
+  },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
