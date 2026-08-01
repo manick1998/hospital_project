@@ -13,6 +13,7 @@ import {
   X,
   Stethoscope,
   HeartPulse,
+  Menu,
 } from 'lucide-react';
 import { AppNotification } from '@/services/api';
 
@@ -23,6 +24,7 @@ interface HeaderProps {
   notifications: AppNotification[];
   onMarkNotificationsRead: () => void;
   hospitalName?: string;
+  onOpenMobileMenu?: () => void;
 }
 
 const ROLES = [
@@ -41,6 +43,7 @@ export const Header: React.FC<HeaderProps> = ({
   notifications,
   onMarkNotificationsRead,
   hospitalName = 'AegisCare Medical Center',
+  onOpenMobileMenu,
 }) => {
   const [showRoleDropdown, setShowRoleDropdown] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -51,7 +54,7 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
       {/* Critical Alert Ticker */}
-      <div className="bg-gradient-to-r from-rose-900/80 via-amber-900/60 to-rose-900/80 border-b border-rose-500/30 px-4 py-1.5 text-xs text-rose-200 flex items-center justify-between font-medium">
+      <div className="bg-gradient-to-r from-rose-900/80 via-amber-900/60 to-rose-900/80 border-b border-rose-500/30 px-3 sm:px-4 py-1.5 text-xs text-rose-200 flex items-center justify-between font-medium">
         <div className="flex items-center gap-2 overflow-hidden whitespace-nowrap">
           <span className="flex h-2 w-2 relative">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
@@ -60,7 +63,7 @@ export const Header: React.FC<HeaderProps> = ({
           <span className="font-bold text-rose-300 uppercase tracking-wider text-[10px] bg-rose-500/20 px-1.5 py-0.5 rounded border border-rose-500/30">
             EMERGENCY LIVE FEED
           </span>
-          <span className="truncate">
+          <span className="truncate text-[11px] sm:text-xs">
             Critical Alert: Patient Eleanor Vance (Bed ICU-02) - High Troponin-I Level (1.45 ng/mL). Trauma Bay-01 Occupied.
           </span>
         </div>
@@ -71,22 +74,31 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
       </div>
 
-      <div className="px-4 sm:px-6 py-3 flex items-center justify-between">
-        {/* Brand Logo & Hospital Name */}
-        <div className="flex items-center gap-3">
-          <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-600 text-white shadow-lg shadow-cyan-500/20 ring-1 ring-white/20">
-            <Activity className="w-6 h-6 animate-pulse" />
+      <div className="px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between">
+        {/* Brand Logo & Hospital Name + Mobile Hamburger Menu */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          {onOpenMobileMenu && (
+            <button
+              onClick={onOpenMobileMenu}
+              className="lg:hidden p-2 -ml-1 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 transition-all focus:outline-none"
+              aria-label="Open navigation menu"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
+          )}
+          <div className="relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-600 text-white shadow-lg shadow-cyan-500/20 ring-1 ring-white/20 shrink-0">
+            <Activity className="w-5 h-5 sm:w-6 sm:h-6 animate-pulse" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="font-bold text-lg text-white tracking-tight leading-none font-sans">
+              <h1 className="font-bold text-sm sm:text-lg text-white tracking-tight leading-none font-sans">
                 {hospitalName}
               </h1>
               <span className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-semibold bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 rounded-full uppercase tracking-wider">
                 Enterprise HMS v4.2
               </span>
             </div>
-            <p className="text-xs text-slate-400 font-medium">
+            <p className="hidden sm:block text-xs text-slate-400 font-medium">
               Precision Healthcare & Clinical Intelligence System
             </p>
           </div>

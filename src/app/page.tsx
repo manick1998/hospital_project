@@ -49,6 +49,7 @@ export default function HospitalApp() {
   const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard');
   const [currentRole, setCurrentRole] = useState<string>('ADMIN');
   const [isAiModalOpen, setIsAiModalOpen] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   // Data States
   const [patients, setPatients] = useState<Patient[]>([]);
@@ -143,18 +144,24 @@ export default function HospitalApp() {
         notifications={notifications}
         onMarkNotificationsRead={handleMarkNotificationsRead}
         hospitalName={hospitalSettings.hospitalName}
+        onOpenMobileMenu={() => setIsMobileSidebarOpen(true)}
       />
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden relative">
         {/* Navigation Sidebar */}
         <Sidebar
           activeTab={activeTab}
-          onSelectTab={setActiveTab}
+          onSelectTab={(tab) => {
+            setActiveTab(tab);
+            setIsMobileSidebarOpen(false);
+          }}
           currentRole={currentRole}
+          isOpen={isMobileSidebarOpen}
+          onClose={() => setIsMobileSidebarOpen(false)}
         />
 
         {/* Main Work View */}
-        <main className="flex-1 overflow-y-auto bg-slate-950">
+        <main className="flex-1 overflow-y-auto bg-slate-950 w-full min-w-0">
           {loading ? (
             <div className="p-12 text-center text-xs text-slate-400 font-mono">
               Bootstrapping AegisCare Hospital Intelligence System & PostgreSQL Database...
