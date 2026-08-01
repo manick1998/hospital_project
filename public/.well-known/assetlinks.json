@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "app.vercel.hospital_project_mu_liard.twa",
+        "sha256_cert_fingerprints": ["89:75:C4:54:90:97:5A:67:0E:D8:1B:F8:C2:A9:06:F0:75:D5:14:17:72:B6:CE:21:C9:12:82:E5:FD:D5:C8:D1"]
+      }
+    }]
