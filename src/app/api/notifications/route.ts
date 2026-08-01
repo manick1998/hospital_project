@@ -4,6 +4,8 @@ import { notifications } from '@/db/schema';
 import { ensureDbSeeded } from '@/lib/db-helper';
 import { eq, desc } from 'drizzle-orm';
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   await ensureDbSeeded();
   const list = await db.select().from(notifications).orderBy(desc(notifications.createdAt));

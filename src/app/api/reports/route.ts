@@ -3,6 +3,8 @@ import { db } from '@/db';
 import { patients, appointments, invoices, beds, doctors, inventory, labReports } from '@/db/schema';
 import { ensureDbSeeded } from '@/lib/db-helper';
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   await ensureDbSeeded();
 

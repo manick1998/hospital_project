@@ -118,7 +118,10 @@ export default function HospitalApp() {
   }, []);
 
   useEffect(() => {
-    loadAllData();
+    const init = async () => {
+      await loadAllData();
+    };
+    init();
   }, [loadAllData]);
 
   const handleMarkNotificationsRead = async () => {

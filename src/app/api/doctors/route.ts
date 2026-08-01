@@ -4,6 +4,8 @@ import { doctors } from '@/db/schema';
 import { ensureDbSeeded } from '@/lib/db-helper';
 import { eq } from 'drizzle-orm';
 
+export const dynamic = "force-dynamic";
+
 export async function GET(req: Request) {
   await ensureDbSeeded();
   const { searchParams } = new URL(req.url);

@@ -4,6 +4,8 @@ import { beds, patients, auditLogs } from '@/db/schema';
 import { ensureDbSeeded } from '@/lib/db-helper';
 import { eq } from 'drizzle-orm';
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
   await ensureDbSeeded();
   const list = await db.select().from(beds);
