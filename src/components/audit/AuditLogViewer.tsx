@@ -65,8 +65,47 @@ export const AuditLogViewer: React.FC<AuditLogViewerProps> = ({ logs }) => {
         </div>
       </div>
 
-      {/* Audit Log Table */}
-      <div className="rounded-3xl bg-slate-900 border border-slate-800 overflow-hidden shadow-xl">
+      {/* 1. Mobile Android Card List (Material Design 3 - md:hidden) */}
+      <div className="grid grid-cols-1 gap-3 md:hidden font-mono">
+        {filteredLogs.map((log) => (
+          <div
+            key={log.id}
+            className="p-4 rounded-3xl bg-slate-900 border border-slate-800 shadow-lg relative overflow-hidden flex flex-col gap-2 text-xs"
+          >
+            <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
+              <span className="text-[11px] text-slate-400">{log.timestamp}</span>
+              <span
+                className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                  log.severity === 'CRITICAL'
+                    ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
+                    : log.severity === 'WARNING'
+                    ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                    : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                }`}
+              >
+                {log.severity}
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="font-bold text-white text-sm">{log.userName}</span>
+                <span className="text-[10px] text-cyan-400 ml-2">({log.userRole})</span>
+              </div>
+              <span className="text-[10px] font-bold text-purple-400 bg-purple-500/10 px-2 py-0.5 rounded-md">
+                {log.module}
+              </span>
+            </div>
+
+            <p className="text-slate-300 bg-slate-950/70 p-2.5 rounded-xl border border-slate-800/80 leading-relaxed font-sans text-xs">
+              {log.details}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* 2. Desktop Audit Log Table (hidden on mobile md:hidden, visible on desktop md:block) */}
+      <div className="hidden md:block rounded-3xl bg-slate-900 border border-slate-800 overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-slate-300">
             <thead className="bg-slate-950/80 border-b border-slate-800 text-[11px] uppercase tracking-wider text-slate-400 font-bold">

@@ -21,6 +21,7 @@ import {
   BedDouble,
   CheckCircle2,
   Stethoscope,
+  UserPlus,
 } from 'lucide-react';
 import { Patient, Prescription, LabReport, Invoice, Bed, apiPost } from '@/services/api';
 
@@ -164,8 +165,98 @@ export const PatientRegistry: React.FC<PatientRegistryProps> = ({
         </div>
       </div>
 
-      {/* Patients Table */}
-      <div className="rounded-3xl bg-slate-900 border border-slate-800 overflow-hidden shadow-xl">
+      {/* 1. Mobile Android Card List (Material Design 3 - md:hidden) */}
+      <div className="grid grid-cols-1 gap-3 md:hidden">
+        {filteredPatients.map((p) => (
+          <div
+            key={p.id}
+            onClick={() => setSelectedPatient(p)}
+            className="p-4 rounded-3xl bg-slate-900 border border-slate-800 active:scale-[0.98] transition-all duration-150 shadow-lg relative overflow-hidden flex flex-col gap-3 group cursor-pointer"
+          >
+            {/* Top Row: Avatar + Name + Type Chip */}
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center font-black text-white text-base shrink-0 shadow-md">
+                  {p.fullName.slice(0, 2).toUpperCase()}
+                </div>
+                <div>
+                  <h4 className="font-bold text-white text-sm leading-tight">{p.fullName}</h4>
+                  <span className="text-[11px] font-mono font-bold text-cyan-400">{p.patientCode}</span>
+                </div>
+              </div>
+              <span
+                className={`px-2.5 py-1 rounded-full text-[10px] font-black shrink-0 ${
+                  p.type === 'EMERGENCY'
+                    ? 'bg-rose-500/20 text-rose-300 border border-rose-500/30'
+                    : p.type === 'IPD'
+                    ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/30'
+                    : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                }`}
+              >
+                {p.type}
+              </span>
+            </div>
+
+            {/* Middle Row: Blood + Gender + Phone + Bed */}
+            <div className="flex items-center justify-between text-xs text-slate-300 bg-slate-950/70 p-3 rounded-2xl border border-slate-800/80">
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded-lg bg-rose-500/20 text-rose-300 font-bold font-mono text-[11px]">
+                  {p.bloodGroup}
+                </span>
+                <span>{p.gender}</span>
+                <span className="text-slate-600">•</span>
+                <span>DOB: {p.dob}</span>
+              </div>
+              {p.bedNumber && (
+                <span className="flex items-center gap-1 text-indigo-300 font-bold text-[11px]">
+                  <BedDouble className="w-3.5 h-3.5" /> {p.bedNumber}
+                </span>
+              )}
+            </div>
+
+            {/* Bottom Row: Allergies + Quick Actions */}
+            <div className="flex items-center justify-between pt-1">
+              <div className="flex flex-wrap gap-1">
+                {p.allergies && p.allergies.length > 0 ? (
+                  p.allergies.slice(0, 2).map((alg, i) => (
+                    <span
+                      key={i}
+                      className="px-2 py-0.5 rounded-lg bg-rose-500/10 text-rose-300 border border-rose-500/20 text-[10px] font-medium"
+                    >
+                      ⚠️ {alg}
+                    </span>
+                  ))
+                ) : (
+                  <span className="text-[10px] text-slate-500 font-medium">No allergies</span>
+                )}
+              </div>
+
+              <div className="flex items-center gap-2">
+                <a
+                  href={`tel:${p.phone}`}
+                  onClick={(e) => e.stopPropagation()}
+                  className="p-2.5 rounded-xl bg-slate-800 text-cyan-400 hover:bg-slate-700 active:scale-90 transition-all min-h-[38px] min-w-[38px] flex items-center justify-center"
+                  aria-label="Call Patient"
+                >
+                  <Phone className="w-4 h-4" />
+                </a>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setSelectedPatient(p);
+                  }}
+                  className="px-3.5 py-2 rounded-xl bg-cyan-500 text-slate-950 font-black text-xs hover:bg-cyan-400 active:scale-95 transition-all min-h-[38px] shadow-md shadow-cyan-500/20"
+                >
+                  Open EHR →
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* 2. Desktop Patients Table (hidden on mobile md:hidden, visible on desktop md:block) */}
+      <div className="hidden md:block rounded-3xl bg-slate-900 border border-slate-800 overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-slate-300">
             <thead className="bg-slate-950/80 border-b border-slate-800 text-[11px] uppercase tracking-wider text-slate-400 font-bold">
@@ -262,6 +353,15 @@ export const PatientRegistry: React.FC<PatientRegistryProps> = ({
           </table>
         </div>
       </div>
+
+      {/* Android Material Design 3 Floating Action Button (FAB) - Fixed at Bottom Right on Mobile */}
+      <button
+        onClick={() => setShowRegisterModal(true)}
+        className="fixed bottom-20 right-4 z-40 w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 text-white shadow-xl shadow-cyan-500/40 flex items-center justify-center hover:scale-105 active:scale-90 transition-all md:hidden"
+        aria-label="Register New Patient"
+      >
+        <Plus className="w-6 h-6" />
+      </button>
 
       {/* EHR Details Modal */}
       {selectedPatient && (

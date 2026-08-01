@@ -110,8 +110,71 @@ export const BillingEngine: React.FC<BillingEngineProps> = ({ invoices, patients
         </button>
       </div>
 
-      {/* Invoices Table */}
-      <div className="rounded-3xl bg-slate-900 border border-slate-800 overflow-hidden shadow-xl">
+      {/* 1. Mobile Android Card List (Material Design 3 - md:hidden) */}
+      <div className="grid grid-cols-1 gap-3 md:hidden">
+        {invoices.map((inv) => {
+          const totalAmount = Math.max(0, (inv.subtotal || 0) - (inv.discount || 0) + (inv.tax || 0) - (inv.insuranceCoverage || 0));
+          return (
+            <div
+              key={inv.id}
+              className="p-4 rounded-3xl bg-slate-900 border border-slate-800 shadow-lg relative overflow-hidden flex flex-col gap-3"
+            >
+              <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
+                <div>
+                  <span className="text-[11px] font-mono font-bold text-amber-400">{inv.invoiceCode}</span>
+                  <div className="font-bold text-white text-sm mt-0.5">{inv.patientName}</div>
+                  <div className="text-[11px] text-slate-400">{inv.patientPhone}</div>
+                </div>
+                <span
+                  className={`px-3 py-1 rounded-full text-[10px] font-black ${
+                    inv.status === 'PAID'
+                      ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                      : inv.status === 'PARTIALLY_PAID'
+                      ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                      : 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
+                  }`}
+                >
+                  {inv.status}
+                </span>
+              </div>
+
+              <div className="flex items-center justify-between text-xs bg-slate-950/70 p-3 rounded-2xl border border-slate-800/80">
+                <div>
+                  <span className="text-slate-400 text-[11px]">Gross Total:</span>
+                  <div className="font-mono font-bold text-white text-base">${totalAmount.toFixed(2)}</div>
+                </div>
+                <div className="text-right">
+                  <span className="text-slate-400 text-[11px]">Balance Due:</span>
+                  <div className="font-mono font-bold text-rose-400 text-base">${inv.balanceDue.toFixed(2)}</div>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-end gap-2 pt-1">
+                {inv.balanceDue > 0 && (
+                  <button
+                    onClick={() => {
+                      setPaymentModalInvoice(inv);
+                      setPayAmount(inv.balanceDue.toString());
+                    }}
+                    className="flex-1 py-2 rounded-xl bg-amber-500 text-slate-950 font-black text-xs hover:bg-amber-400 active:scale-95 transition-all min-h-[40px] shadow-md flex items-center justify-center gap-1.5"
+                  >
+                    <CreditCard className="w-4 h-4" /> Receive Payment
+                  </button>
+                )}
+                <button
+                  onClick={() => setPrintReceiptModal(inv)}
+                  className="px-4 py-2 rounded-xl bg-slate-800 text-cyan-300 font-bold text-xs hover:bg-slate-700 active:scale-90 transition-all min-h-[40px] flex items-center justify-center gap-1.5"
+                >
+                  <Printer className="w-4 h-4" /> Receipt
+                </button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* 2. Desktop Invoices Table (hidden on mobile md:hidden, visible on desktop md:block) */}
+      <div className="hidden md:block rounded-3xl bg-slate-900 border border-slate-800 overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-slate-300">
             <thead className="bg-slate-950/80 border-b border-slate-800 text-[11px] uppercase tracking-wider text-slate-400 font-bold">
@@ -196,6 +259,15 @@ export const BillingEngine: React.FC<BillingEngineProps> = ({ invoices, patients
           </table>
         </div>
       </div>
+
+      {/* Android Material Design 3 Floating Action Button (FAB) for Creating Invoice on Mobile */}
+      <button
+        onClick={() => setShowCreateModal(true)}
+        className="fixed bottom-20 right-4 z-40 w-14 h-14 rounded-2xl bg-gradient-to-tr from-amber-500 to-orange-600 text-white shadow-xl shadow-amber-500/40 flex items-center justify-center hover:scale-105 active:scale-90 transition-all md:hidden"
+        aria-label="Generate new invoice"
+      >
+        <Plus className="w-6 h-6" />
+      </button>
 
       {/* Generate Invoice Modal */}
       {showCreateModal && (

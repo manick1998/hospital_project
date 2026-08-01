@@ -243,6 +243,15 @@ export const AppointmentManager: React.FC<AppointmentManagerProps> = ({
         ))}
       </div>
 
+      {/* Android Material Design 3 Floating Action Button (FAB) for Booking Appointment on Mobile */}
+      <button
+        onClick={() => setShowShowBookModal(true)}
+        className="fixed bottom-20 right-4 z-40 w-14 h-14 rounded-2xl bg-gradient-to-tr from-emerald-500 to-teal-600 text-white shadow-xl shadow-emerald-500/40 flex items-center justify-center hover:scale-105 active:scale-90 transition-all md:hidden"
+        aria-label="Book new appointment"
+      >
+        <Plus className="w-6 h-6" />
+      </button>
+
       {/* Book Appointment Modal */}
       {showBookModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 animate-in fade-in">

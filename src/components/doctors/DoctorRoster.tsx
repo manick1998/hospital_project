@@ -190,6 +190,15 @@ export const DoctorRoster: React.FC<DoctorRosterProps> = ({ doctors, onRefresh }
         ))}
       </div>
 
+      {/* Android Material Design 3 Floating Action Button (FAB) for Adding Doctor on Mobile */}
+      <button
+        onClick={() => setShowAddModal(true)}
+        className="fixed bottom-20 right-4 z-40 w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 text-white shadow-xl shadow-cyan-500/40 flex items-center justify-center hover:scale-105 active:scale-90 transition-all md:hidden"
+        aria-label="Add new doctor"
+      >
+        <Plus className="w-6 h-6" />
+      </button>
+
       {/* Add Doctor Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4 animate-in fade-in">

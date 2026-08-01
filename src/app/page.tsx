@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Sidebar, ActiveTab } from '@/components/layout/Sidebar';
+import { BottomNav } from '@/components/layout/BottomNav';
 import { AiClinicalAssistantModal } from '@/components/ai/AiClinicalAssistantModal';
 import { DashboardView } from '@/components/dashboard/DashboardView';
 import { PatientRegistry } from '@/components/patients/PatientRegistry';
@@ -161,7 +162,7 @@ export default function HospitalApp() {
         />
 
         {/* Main Work View */}
-        <main className="flex-1 overflow-y-auto bg-slate-950 w-full min-w-0">
+        <main className="flex-1 overflow-y-auto bg-slate-950 w-full min-w-0 pb-20 lg:pb-0">
           {loading ? (
             <div className="p-12 text-center text-xs text-slate-400 font-mono">
               Bootstrapping AegisCare Hospital Intelligence System & PostgreSQL Database...
@@ -275,6 +276,14 @@ export default function HospitalApp() {
       <AiClinicalAssistantModal
         isOpen={isAiModalOpen}
         onClose={() => setIsAiModalOpen(false)}
+      />
+
+      {/* Material Design 3 Bottom Navigation Bar for Mobile */}
+      <BottomNav
+        activeTab={activeTab}
+        onSelectTab={setActiveTab}
+        currentRole={currentRole}
+        onRoleChange={setCurrentRole}
       />
     </div>
   );

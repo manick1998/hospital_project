@@ -132,8 +132,61 @@ export const PrescriptionBuilder: React.FC<PrescriptionBuilderProps> = ({
         </button>
       </div>
 
-      {/* Prescriptions Table */}
-      <div className="rounded-3xl bg-slate-900 border border-slate-800 overflow-hidden shadow-xl">
+      {/* 1. Mobile Android Card List (Material Design 3 - md:hidden) */}
+      <div className="grid grid-cols-1 gap-3 md:hidden">
+        {prescriptions.map((rx) => (
+          <div
+            key={rx.id}
+            className="p-4 rounded-3xl bg-slate-900 border border-slate-800 shadow-lg relative overflow-hidden flex flex-col gap-3"
+          >
+            <div className="flex items-start justify-between border-b border-slate-800/80 pb-3">
+              <div>
+                <span className="text-[11px] font-mono font-bold text-purple-400">{rx.prescriptionCode}</span>
+                <div className="font-bold text-white text-sm mt-0.5">{rx.patientName}</div>
+                <div className="text-[11px] text-slate-400">{rx.doctorName} • {rx.createdAt?.toString().split('T')[0] || 'Recent'}</div>
+              </div>
+              {rx.aiSafetyCheck?.flagged ? (
+                <span className="px-2.5 py-1 rounded-full bg-rose-500/20 text-rose-300 border border-rose-500/30 text-[10px] font-bold flex items-center gap-1">
+                  <AlertTriangle className="w-3 h-3 text-rose-400" /> Drug Alert
+                </span>
+              ) : (
+                <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-[10px] font-bold flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3 text-emerald-400" /> Safety OK
+                </span>
+              )}
+            </div>
+
+            <div className="text-xs bg-slate-950/70 p-3 rounded-2xl border border-slate-800/80 space-y-1.5">
+              <div>
+                <span className="text-[10px] uppercase font-bold text-slate-500">Diagnosis:</span>
+                <div className="text-white font-semibold">{rx.diagnosis}</div>
+              </div>
+              <div>
+                <span className="text-[10px] uppercase font-bold text-slate-500">Medications:</span>
+                <div className="flex flex-wrap gap-1 mt-1">
+                  {rx.medications?.map((m, i) => (
+                    <span key={i} className="px-2 py-0.5 rounded bg-slate-900 border border-slate-800 text-[10px] text-slate-300 font-mono">
+                      {m.medicineName} ({m.dosage})
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-2 pt-1">
+              <button
+                onClick={() => setSelectedRxPrint(rx)}
+                className="w-full py-2 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs active:scale-95 transition-all min-h-[40px] flex items-center justify-center gap-1.5"
+              >
+                <Printer className="w-4 h-4" /> Print e-Prescription
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* 2. Desktop Prescriptions Table (hidden on mobile md:hidden, visible on desktop md:block) */}
+      <div className="hidden md:block rounded-3xl bg-slate-900 border border-slate-800 overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-slate-300">
             <thead className="bg-slate-950/80 border-b border-slate-800 text-[11px] uppercase tracking-wider text-slate-400 font-bold">
@@ -200,6 +253,15 @@ export const PrescriptionBuilder: React.FC<PrescriptionBuilderProps> = ({
           </table>
         </div>
       </div>
+
+      {/* Android Material Design 3 Floating Action Button (FAB) for Creating e-Prescription on Mobile */}
+      <button
+        onClick={() => setShowCreateModal(true)}
+        className="fixed bottom-20 right-4 z-40 w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white shadow-xl shadow-purple-500/40 flex items-center justify-center hover:scale-105 active:scale-90 transition-all md:hidden"
+        aria-label="Create new e-Prescription"
+      >
+        <Plus className="w-6 h-6" />
+      </button>
 
       {/* New Prescription Builder Modal */}
       {showCreateModal && (

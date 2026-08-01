@@ -396,6 +396,15 @@ export const DashboardView: React.FC<DashboardViewProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Android Material Design 3 Floating Action Button (FAB) for AI Diagnostic Copilot on Mobile */}
+      <button
+        onClick={onOpenAi}
+        className="fixed bottom-20 right-4 z-40 w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-cyan-500 text-white shadow-xl shadow-purple-500/40 flex items-center justify-center hover:scale-105 active:scale-90 transition-all md:hidden"
+        aria-label="Launch AI Diagnostic Copilot"
+      >
+        <Sparkles className="w-6 h-6 animate-pulse" />
+      </button>
     </div>
   );
 };

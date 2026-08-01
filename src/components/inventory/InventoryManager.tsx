@@ -106,8 +106,66 @@ export const InventoryManager: React.FC<InventoryManagerProps> = ({ inventory, o
         />
       </div>
 
-      {/* Inventory Table */}
-      <div className="rounded-3xl bg-slate-900 border border-slate-800 overflow-hidden shadow-xl">
+      {/* 1. Mobile Android Card List (Material Design 3 - md:hidden) */}
+      <div className="grid grid-cols-1 gap-3 md:hidden">
+        {filteredInventory.map((item) => (
+          <div
+            key={item.id}
+            className="p-4 rounded-3xl bg-slate-900 border border-slate-800 shadow-lg relative overflow-hidden flex flex-col gap-3"
+          >
+            <div className="flex items-start justify-between border-b border-slate-800/80 pb-3">
+              <div>
+                <span className="text-[11px] font-mono font-bold text-purple-400">{item.itemCode}</span>
+                <div className="font-bold text-white text-sm mt-0.5">{item.itemName}</div>
+                <div className="text-[11px] text-slate-400">{item.category} • {item.location}</div>
+              </div>
+              <span
+                className={`px-2.5 py-1 rounded-full text-[10px] font-black ${
+                  item.status === 'LOW_STOCK'
+                    ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30'
+                    : item.status === 'OUT_OF_STOCK'
+                    ? 'bg-red-500/30 text-red-300 border border-red-500/40'
+                    : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                }`}
+              >
+                {item.status}
+              </span>
+            </div>
+
+            <div className="flex items-center justify-between text-xs bg-slate-950/70 p-3 rounded-2xl border border-slate-800/80">
+              <div>
+                <span className="text-slate-400 text-[11px]">In Stock:</span>
+                <div className="font-mono font-bold text-white text-base">
+                  {item.stockQuantity} <span className="text-xs font-normal text-slate-400">{item.unit}</span>
+                </div>
+              </div>
+              <div>
+                <span className="text-slate-400 text-[11px]">Expiry:</span>
+                <div className="font-mono font-bold text-amber-300 text-xs">{item.expiryDate}</div>
+              </div>
+              <div className="text-right">
+                <span className="text-slate-400 text-[11px]">Price:</span>
+                <div className="font-mono font-bold text-cyan-400 text-base">${item.unitPrice}</div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-end gap-2 pt-1">
+              <button
+                onClick={() => {
+                  setRestockModalItem(item);
+                  setRestockQty('50');
+                }}
+                className="w-full py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-bold text-xs active:scale-95 transition-all min-h-[44px] flex items-center justify-center gap-1.5 shadow-md shadow-purple-950"
+              >
+                <RefreshCw className="w-4 h-4" /> Restock Supply
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* 2. Desktop Inventory Table (hidden on mobile md:hidden, visible on desktop md:block) */}
+      <div className="hidden md:block rounded-3xl bg-slate-900 border border-slate-800 overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs text-slate-300">
             <thead className="bg-slate-950/80 border-b border-slate-800 text-[11px] uppercase tracking-wider text-slate-400 font-bold">
@@ -173,6 +231,15 @@ export const InventoryManager: React.FC<InventoryManagerProps> = ({ inventory, o
           </table>
         </div>
       </div>
+
+      {/* Android Material Design 3 Floating Action Button (FAB) for Adding Supply Item on Mobile */}
+      <button
+        onClick={() => setShowAddModal(true)}
+        className="fixed bottom-20 right-4 z-40 w-14 h-14 rounded-2xl bg-gradient-to-tr from-purple-600 to-indigo-600 text-white shadow-xl shadow-purple-500/40 flex items-center justify-center hover:scale-105 active:scale-90 transition-all md:hidden"
+        aria-label="Add new supply item"
+      >
+        <Plus className="w-6 h-6" />
+      </button>
 
       {/* Restock Modal */}
       {restockModalItem && (

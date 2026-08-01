@@ -75,17 +75,8 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       <div className="px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between">
-        {/* Brand Logo & Hospital Name + Mobile Hamburger Menu */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          {onOpenMobileMenu && (
-            <button
-              onClick={onOpenMobileMenu}
-              className="lg:hidden p-2 -ml-1 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white hover:bg-slate-800 transition-all focus:outline-none"
-              aria-label="Open navigation menu"
-            >
-              <Menu className="w-5 h-5" />
-            </button>
-          )}
+        {/* Brand Logo & Hospital Name */}
+        <div className="flex items-center gap-2.5 sm:gap-3">
           <div className="relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-cyan-500 via-blue-600 to-indigo-600 text-white shadow-lg shadow-cyan-500/20 ring-1 ring-white/20 shrink-0">
             <Activity className="w-5 h-5 sm:w-6 sm:h-6 animate-pulse" />
           </div>
