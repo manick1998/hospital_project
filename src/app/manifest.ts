@@ -1,0 +1,44 @@
+import type { MetadataRoute } from 'next';
+
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: 'AegisCare Hospital Medical Center',
+    short_name: 'AegisCare',
+    description: 'Modern Hospital Management & Clinical Intelligence System',
+    start_url: '/',
+    display: 'standalone',
+    background_color: '#020617',
+    theme_color: '#06b6d4',
+    orientation: 'portrait-primary',
+    categories: ['medical', 'health', 'productivity'],
+    icons: [
+      {
+        src: '/icon-192x192.png',
+        sizes: '192x192',
+        type: 'image/png',
+        purpose: 'any',
+      },
+      {
+        src: '/icon-512x512.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'any',
+      },
+      {
+        src: '/maskable-icon-512x512.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'maskable',
+      },
+    ],
+    screenshots: [
+      {
+        src: '/screenshot.png',
+        sizes: '1280x720',
+        type: 'image/png',
+        form_factor: 'wide',
+        label: 'Executive Hospital Dashboard and Clinical Management',
+      },
+    ],
+  };
+}

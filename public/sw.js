@@ -1,9 +1,12 @@
-const CACHE_NAME = 'aegiscare-v1';
+const CACHE_NAME = 'aegiscare-pwa-v2';
 const ASSETS_TO_CACHE = [
   '/',
+  '/manifest.webmanifest',
   '/manifest.json',
   '/icon-192x192.png',
-  '/icon-512x512.png'
+  '/icon-512x512.png',
+  '/maskable-icon-512x512.png',
+  '/screenshot.png'
 ];
 
 self.addEventListener('install', (event) => {
